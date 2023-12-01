@@ -1,22 +1,34 @@
-'use strict'
+"use strict";
 
-
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.3.1/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.3.1/firebase-auth.js";
-// import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.3.1/firebase-firestore.js";
-import { getDatabase ,ref, set  } from "https://www.gstatic.com/firebasejs/10.3.1/firebase-database.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+  signOut,
+} from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+// import {
+//   getFirestore,
+//   addDoc,
+//   collection,
+// } from "https://www.gstatic.com/firebasejs/10.3.1/firebase-firestore.js";
+import {
+  getDatabase,
+  ref,
+  set,
+} from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
 // import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.3.1/firebase-storage.js";
 
-
 const firebaseConfig = {
-  apiKey: "AIzaSyB5dyQTH4hPox-VDA7KZfpvBc4Kqy2RPug",
-  authDomain: "e-commerece-db314.firebaseapp.com",
-  projectId: "e-commerece-db314",
-  storageBucket: "e-commerece-db314.appspot.com",
-  messagingSenderId: "775385247717",
-  appId: "1:775385247717:web:ac8851286705e2071c090c"
+  apiKey: "AIzaSyCikFNmz2CE7VDyr_QAghlW-94ezu_HXKM",
+  authDomain: "daraz-a56fb.firebaseapp.com",
+  projectId: "daraz-a56fb",
+  storageBucket: "daraz-a56fb.appspot.com",
+  messagingSenderId: "679538188748",
+  appId: "1:679538188748:web:3d48458417e86928d23d69",
+  measurementId: "G-JDJ8HKMJD2",
 };
-
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
@@ -24,17 +36,13 @@ const auth = getAuth(app);
 // const storage = getStorage(app);
 const database = getDatabase(app);
 
-
-
-
 onAuthStateChanged(auth, (user) => {
   if (user) {
     // User is signed in, see docs for a list of available properties
-    document.getElementById('spinner').style.display = 'none'
+    document.getElementById("spinner").style.display = "none";
 
     const uid = user.uid;
-    console.log(uid)
-
+    console.log(uid);
 
     // ...
   } else {
@@ -43,76 +51,64 @@ onAuthStateChanged(auth, (user) => {
   }
 });
 
-
-
 function userRegisteration() {
-
-  const userName = document.getElementById('userName').value
-  const email = document.getElementById('email').value
-  const password = document.getElementById('password').value
-  const confrmPassword = document.getElementById('confirm-password').value
-
+  const userName = document.getElementById("userName").value;
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+  const confrmPassword = document.getElementById("confirm-password").value;
 
   createUserWithEmailAndPassword(auth, email, password)
     .then(async (userCredential) => {
-
-
       Swal.fire({
-        position: 'top-50px',
-        icon: 'success',
-        title: 'Sign up Successfully',
+        position: "top-50px",
+        icon: "success",
+        title: "Sign up Successfully",
         showConfirmButton: false,
-        timer: 1500
-      })
+        timer: 1500,
+      });
 
-      document.getElementById('spinner').style.display = 'block'
-      // Signed in 
+      document.getElementById("spinner").style.display = "block";
+      // Signed in
+
       const userInfo = {
-        userName,
-        email,
-        password,
-        confrmPassword
-      }
+        user_Name: userName,
+        user_Email: email,
+        user_Password: password,
+      };
 
-  await set(ref(database , `user/${auth.currentUser.uid}`) , userInfo)
+      await set(ref(database, `user/${auth.currentUser.uid}`), userInfo);
 
-      location.href = './index.html'
-
+      location.href = "./index.html";
     })
     .catch((error) => {
       const errorCode = error.code;
       const errorMessage = error.message;
-      console.log(error)
+      console.log(error);
       // ..
     });
-
 }
 
-
 function logIn() {
-  const userName = document.getElementById('login-user-name').value
-  const email = document.getElementById('login-email').value
-  const password = document.getElementById('login-password').value
+  const userName = document.getElementById("login-user-name").value;
+  const email = document.getElementById("login-email").value;
+  const password = document.getElementById("login-password").value;
 
   signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
-      // Signed in 
-      console.log('user is login')
+      // Signed in
+      console.log("user is login");
 
       Swal.fire({
-        position: 'top-50px',
-        icon: 'success',
-        title: 'Login Successfully',
+        position: "top-50px",
+        icon: "success",
+        title: "Login Successfully",
         showConfirmButton: false,
-        timer: 1500
-      })
-
-
+        timer: 1500,
+      });
 
       const user = userCredential.user;
-      document.getElementById('spinner').style.display = 'block'
-      location.href = './index.html'
-
+      document.getElementById("spinner").style.display = "block";
+      location.href = "./index.html";
 
       // ...
     })
@@ -120,48 +116,42 @@ function logIn() {
       const errorCode = error.code;
       const errorMessage = error.message;
     });
-
 }
-
 
 function logOut() {
-
   const auth = getAuth();
-  signOut(auth).then(() => {
+  signOut(auth)
+    .then(() => {
+      console.log("user is signout");
+      Swal.fire({
+        position: "top-50px",
+        icon: "success",
+        title: "Logout Succesfully",
+        showConfirmButton: false,
+        timer: 1500,
+      });
 
-    console.log('user is signout')
-    Swal.fire({
-      position: 'top-50px',
-      icon: 'success',
-      title: 'Logout Succesfully',
-      showConfirmButton: false,
-      timer: 1500
+      // Sign-out successful.
     })
-
-
-    // Sign-out successful.
-  }).catch((error) => {
-    // An error happened.
-  });
-
-
+    .catch((error) => {
+      // An error happened.
+    });
 }
-
-
 
 //FETCH API TO GET ALL PRODUCT
 
-
-const container = document.getElementById('container')
+const container = document.getElementById("container");
 
 async function getPorducts() {
-  const productsResponse = await fetch('https://dummyjson.com/products').then(res => res.json())
-  let products = productsResponse.products
-  console.log(products)
+  const productsResponse = await fetch("https://dummyjson.com/products").then(
+    (res) => res.json()
+  );
+  let products = productsResponse.products;
+  console.log(products);
 
   //For Each
   products.forEach((data, i) => {
-    const {id , thumbnail, title, price ,category} = data
+    const { id, thumbnail, title, price, category } = data;
     const card = `
         <div class="w-72 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl" data-aos="fade-right" >
       <a href="#">
@@ -185,57 +175,51 @@ async function getPorducts() {
               </div>
           </div>
       </a>
-  </div>`
-    container.innerHTML += card
-  })
-
+  </div>`;
+    container.innerHTML += card;
+  });
 
   //map
-  var categories = []
+  var categories = [];
   products.map((obj, i) => {
     if (!categories.includes(obj.category)) {
-      categories.push(obj.category)
+      categories.push(obj.category);
     }
-  })
-
+  });
 
   categories.forEach((cat, i) => {
-    var chip = `<button class="CatBtn" id="chip" onclick = "remove(this)">${cat}</button>`
-    tags.innerHTML += chip
-  })
-
-
+    var chip = `<button class="CatBtn" id="chip" onclick = "remove(this)">${cat}</button>`;
+    tags.innerHTML += chip;
+  });
 }
 
-
-getPorducts()
-
-
+getPorducts();
 
 //FUNCTION ON CATEGOERY FUNCTION
 
-const remove = (btn ) => {
-  container.innerHTML = null
+const remove = (btn) => {
+  container.innerHTML = null;
   async function checking() {
-    const productsResponse = await fetch('https://dummyjson.com/products').then(res => res.json())
-    let products = productsResponse.products
-    console.log(products)
+    const productsResponse = await fetch("https://dummyjson.com/products").then(
+      (res) => res.json()
+    );
+    let products = productsResponse.products;
+    console.log(products);
 
-    const chipHtml = btn.innerText
-    console.log(chipHtml)
-    var emptyArray = []
+    const chipHtml = btn.innerText;
+    console.log(chipHtml);
+    var emptyArray = [];
     for (var i = 0; i < products.length; i++) {
       if (chipHtml === products[i].category) {
-        console.log(products[i])
-        emptyArray.push(products[i])
-        console.log(emptyArray)
+        console.log(products[i]);
+        emptyArray.push(products[i]);
+        console.log(emptyArray);
       }
     }
 
     emptyArray.forEach((element, i) => {
-      const { thumbnail, title, price, } = element
-      const catCard =
-        `
+      const { thumbnail, title, price } = element;
+      const catCard = `
         <div class="w-72 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl" data-aos="fade-right" >
       <a href="#">
           <img src=${thumbnail}
@@ -258,27 +242,27 @@ const remove = (btn ) => {
               </div>
           </div>
       </a>
-  </div>`
-      container.innerHTML += catCard
-    })
-
+  </div>`;
+      container.innerHTML += catCard;
+    });
   }
 
-  checking()
-
-}
+  checking();
+};
 
 //FETCH API TO GET SEARCH PRODUCT
 
 async function getData() {
   var input = document.getElementById("userInput").value;
-  console.log(input)
-  const search = await fetch(`https://dummyjson.com/products/search?q=${input}`).then(res => res.json())
+  console.log(input);
+  const search = await fetch(
+    `https://dummyjson.com/products/search?q=${input}`
+  ).then((res) => res.json());
 
-  console.log(search)
-  container.innerHTML = null
+  console.log(search);
+  container.innerHTML = null;
   search.products.forEach((data, i) => {
-    const { thumbnail, title, price, } = data
+    const { thumbnail, title, price } = data;
     const card = `
         <div class="w-72 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl" data-aos="fade-right" >
       <a href="#">
@@ -302,38 +286,31 @@ async function getData() {
               </div>
           </div>
       </a>
-  </div>`
-    container.innerHTML += card
-  })
-
-
+  </div>`;
+    container.innerHTML += card;
+  });
 }
-
-
 
 //ADD TO CART FUNCTION
 
-const addToCart = async (btn,id) => {
-
+const addToCart = async (btn, id) => {
+  // btn.preventDefault;
   if (auth.currentUser) {
-
- 
-
-  
-
-
+    await set(
+      ref(database, `cart-Items/${auth.currentUser.uid}`),
+      fetch(`https://dummyjson.com/products/${id}`)
+        .then((res) => res.json())
+        .then((json) => console.log(json))
+    );
   } else {
     Swal.fire({
-      icon: 'error',
-      title: 'Oops...',
-      text: 'Something went wrong!',
-      footer: '<a href="">Why do I have this issue?</a>'
-    })
-
+      icon: "error",
+      title: "Oops...",
+      text: "Something went wrong!",
+      footer: '<a href="">Why do I have this issue?</a>',
+    });
   }
-
-}
-
+};
 
 window.getPorducts = getPorducts;
 window.addToCart = addToCart;
@@ -342,13 +319,6 @@ window.getData = getData;
 window.userRegisteration = userRegisteration;
 window.logOut = logOut;
 window.logIn = logIn;
-
-
-
-
-
-
-
 
 // async function fakeApi(){
 //     const call = await fetch('https://reqres.in/api/users?page=2').then(res=>res.json())
