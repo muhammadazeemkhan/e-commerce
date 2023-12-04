@@ -17,6 +17,7 @@ import {
   getDatabase,
   ref,
   set,
+  push,
 } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
 // import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.3.1/firebase-storage.js";
 
@@ -296,12 +297,14 @@ async function getData() {
 const addToCart = async (btn, id) => {
   // btn.preventDefault;
   if (auth.currentUser) {
-    await set(
-      ref(database, `cart-Items/${auth.currentUser.uid}`),
-      fetch(`https://dummyjson.com/products/${id}`)
-        .then((res) => res.json())
-        .then((json) => console.log(json))
-    );
+    // .then(async (json) => console.log(json));
+    const cartRef = ref(database, "cart/" + auth.currentUser.uid);
+    const newRef = push(cartRef);
+    set(newRef, {
+      ...(await fetch(`https://dummyjson.com/products/${id}`).then((res) =>
+        res.json()
+      )),
+    });
   } else {
     Swal.fire({
       icon: "error",
