@@ -40,7 +40,7 @@ const database = getDatabase(app);
 onAuthStateChanged(auth, (user) => {
   if (user) {
     // document.getElementById("spinner").style.display = "none";
-
+    costumerData();
     const uid = user.uid;
     console.log(uid);
 
@@ -50,6 +50,13 @@ onAuthStateChanged(auth, (user) => {
   } else {
     // User is signed out
     // ...
+    const costumerName = document.getElementById("costumerName");
+    const costumerEmail = document.getElementById("costumerEmail");
+    const dashboardUserName = document.getElementById("dashboardUserName");
+
+    costumerName.innerText = "User Name";
+    dashboardUserName.innerText = "User Name";
+    costumerEmail.innerText = "user@gmail.com";
   }
 });
 
@@ -140,6 +147,24 @@ function logOut() {
     });
 }
 
+function costumerData() {
+  const costumerName = document.getElementById("costumerName");
+  const costumerEmail = document.getElementById("costumerEmail");
+  const dashboardUserName = document.getElementById("dashboardUserName");
+  const dashboardUserId = document.getElementById("dashboardUserId");
+  const userRef = ref(database, `user/${auth.currentUser.uid}`);
+  onValue(userRef, (snapshot) => {
+    if (snapshot.val()) {
+      const { user_Email, user_Name } = snapshot.val();
+      console.log(user_Name);
+      console.log(user_Email);
+      costumerName.innerText = user_Name;
+      costumerEmail.innerText = user_Email;
+      dashboardUserName.innerText = user_Name;
+      dashboardUserId.innerText = user_Email;
+    }
+  });
+}
 //FETCH API TO GET ALL PRODUCT
 
 const container = document.getElementById("container");
@@ -190,7 +215,7 @@ async function getPorducts() {
   });
 
   categories.forEach((cat, i) => {
-    var chip = `<button class="CatBtn" id="chip" onclick = "remove(this)">${cat}</button>`;
+    var chip = `<button class="CatBtn" id="chip" onclick = "removeCard(this)">${cat}</button>`;
     tags.innerHTML += chip;
   });
 }
