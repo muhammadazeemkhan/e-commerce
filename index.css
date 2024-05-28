@@ -239,9 +239,10 @@ nav{
   .CatBtn{
     width: 140px;
     height: 40px;
-    border-radius: 12px;
+    border-radius: 30px;
     border: none;
-    background-color: rgb(255, 208, 0);
+    background-color: black;
+    color: white;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -423,4 +424,12 @@ nav{
 #tags{
   gap: 20px;
 }
+ }
+
+
+
+
+ .swiper {
+   width: 100%;
+   height: 200px;
  }

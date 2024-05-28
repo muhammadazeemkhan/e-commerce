@@ -53,9 +53,9 @@ onAuthStateChanged(auth, (user) => {
     const costumerName = document.getElementById("costumerName");
     const costumerEmail = document.getElementById("costumerEmail");
     const dashboardUserName = document.getElementById("dashboardUserName");
+    const dashboardUserId = document.getElementById("dashboardUserId");
 
     costumerName.innerText = "User Name";
-    dashboardUserName.innerText = "User Name";
     costumerEmail.innerText = "user@gmail.com";
   }
 });
@@ -333,8 +333,8 @@ const addToCart = async (btn, id) => {
     Swal.fire({
       icon: "error",
       title: "Oops...",
-      text: "Something went wrong!",
-      footer: '<a href="">Why do I have this issue?</a>',
+      text: "You are not login OR Signup",
+      footer: '<a href="./signup.html">Click Here for Login/Signup</a>',
     });
   }
 };
@@ -447,3 +447,73 @@ window.deleteCart = deleteCart;
 //     console.log(call)
 // }
 // fakeApi()
+
+// const swiper = new Swiper(".swiper", {
+//   // Optional parameters
+//   direction: "horizontal",
+//   loop: true,
+
+//   // If we need pagination
+//   pagination: {
+//     el: ".swiper-pagination",
+//   },
+
+//   slidesPerView: 3,
+//   spaceBetween: 50,
+
+//   autoplay: {
+//     delay: 1000,
+//     disableOnInteraction: false,
+//   },
+//   speed: 5000,
+
+//   breakpoints: {
+//     640: {
+//       slidesPerView: 1,
+//       spaceBetween: 20,
+//     },
+//     768: {
+//       slidesPerView: 2,
+//       spaceBetween: 40,
+//     },
+//     1024: {
+//       slidesPerView: 3,
+//       spaceBetween: 50,
+//     },
+//   },
+//   // Navigation arrows
+//   navigation: {
+//     nextEl: ".swiper-button-next-left",
+//     prevEl: ".swiper-button-prev-right",
+//   },
+// });
+
+const swiper = new Swiper(".swiper", {
+  // Optional parameters
+  direction: "horizontal",
+  loop: true,
+
+  autoplay: {
+    delay: 1000,
+    disableOnInteraction: true,
+  },
+  speed: 5000,
+  slidesPerView: 3,
+  spaceBetween: 10,
+
+  // If we need pagination
+  pagination: {
+    el: ".swiper-pagination",
+  },
+
+  // Navigation arrows
+  navigation: {
+    nextEl: ".swiper-button-next-unique",
+    prevEl: ".swiper-button-prev-unique",
+  },
+
+  // And if we need scrollbar
+  scrollbar: {
+    el: ".swiper-scrollbar",
+  },
+});
